@@ -10,21 +10,23 @@
       <h2>社員マスタ検索</h2>
     </div>
     <div>
-        <label for="employeeId">社員ID</label>
-        <input type="text" th:field="*{employeeId}">
-        <label for="name">社員名</label>
-        <input type="text" th:field="*{name}">
-        <label for="gender">性別</label>
-        <input type="radio" name="gender" value="M" th:checked="'M' == ${gender}">男
-        <input type="radio" name="gender" value="F" th:checked="'F' == ${gender}">女
-        <label for="enteringYear">入社年</label>
-        <input type="text" th:field="*{enteringYear}">
-        <label for="retired">退職済</label>
-        <input type="checkbox" th:field="*{retired}">
-        <label for="departmentId">部署</label>
-        <input type="text" th:field="*{departmentId}">
-        <button id="searchB" type="submit" formaction="/search">検索</button>
+      <label for="employeeId">社員ID</label>
+      <input type="text" th:field="*{employeeId}">
+      <label for="name">社員名</label>
+      <input type="text" th:field="*{name}">
+      <label for="gender">性別</label>
+      <input type="radio" name="gender" value="M" th:checked="'M' == ${gender}">男
+      <input type="radio" name="gender" value="F" th:checked="'F' == ${gender}">女
+      <label for="enteringYear">入社年</label>
+      <input type="text" th:field="*{enteringYear}">
+      <label for="retired">退職済</label>
+      <input type="checkbox" th:field="*{retired}">
+      <label for="departmentId">部署</label>
+      <input type="text" th:field="*{departmentId}">
+      <button id="searchB" type="submit" formaction="/search">検索</button>
     </div>
+
+    <div>
       <table>
         <thead>
           <tr>
@@ -51,7 +53,6 @@
           </tr>
         </tbody>
       </table>
-    <div>
     </div>
   </form>
 </body>
