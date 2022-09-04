@@ -14,16 +14,17 @@
       <input type="text" th:field="*{employeeId}">
       <label for="name">社員名</label>
       <input type="text" th:field="*{name}">
-      <label for="gender">性別</label>
-      <input type="radio" name="gender" value="M" th:checked="'M' == ${gender}">男
-      <input type="radio" name="gender" value="F" th:checked="'F' == ${gender}">女
+      <label for="gender_m">男</label>
+      <input type="checkbox" th:field="*{gender_m}">
+      <label for="gender_f">女</label>
+      <input type="checkbox" th:field="*{gender_f}">
       <label for="enteringYear">入社年</label>
       <input type="text" th:field="*{enteringYear}">
       <label for="retired">退職済</label>
       <input type="checkbox" th:field="*{retired}">
       <label for="departmentId">部署</label>
       <input type="text" th:field="*{departmentId}">
-      <button id="searchB" type="submit" formaction="/search">検索</button>
+      <button id="searchB" type="submit" formaction="/table_reference/search">検索</button>
     </div>
 
     <div>

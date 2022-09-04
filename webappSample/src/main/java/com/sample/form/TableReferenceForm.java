@@ -15,7 +15,8 @@ public class TableReferenceForm {
 
 	private String employeeId;
 	private String name;
-	private String gender;
+	private boolean gender_m;
+	private boolean gender_f;
 	private String enteringYear;
 	private boolean retired;
 	private String departmentId;

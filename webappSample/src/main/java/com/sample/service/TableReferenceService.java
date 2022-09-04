@@ -16,8 +16,8 @@ public class TableReferenceService {
 
 	@Autowired
 	public TableReferenceDao dao;
-
-	public TableReferenceForm init(TableReferenceForm form) {
+	
+	public TableReferenceForm search(TableReferenceForm form) {
 
 		List<Map<String, Object>> detail = dao.selectDetail(form);
 

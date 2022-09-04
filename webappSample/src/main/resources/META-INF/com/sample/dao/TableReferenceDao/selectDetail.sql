@@ -20,14 +20,16 @@ and m1.employee_id = /* form.employeeId */'1'
 /*%if form.name != null && form.name != "" */
 and m1.name = /* form.name */'1'
 /*%end*/
-/*%if form.gender != null && form.gender != "" */
-and m1.gender = /* form.gender */'1'
+/*%if form.gender_m && !form.gender_f */
+and m1.gender = 'M'
+/*%elseif !form.gender_m && form.gender_f */
+and m1.gender = 'F'
 /*%end*/
 /*%if form.enteringYear != null && form.enteringYear != "" */
 and substring(m1.entering_date ,1 ,4) = /* form.enteringYear */'1'
 /*%end*/
 /*%if form.retired */
-and m1.retirement_date is null
+and m1.retirement_date is not null
 /*%end*/
 /*%if form.departmentId != null && form.departmentId != "" */
 and m1.department_id = /* form.departmentId */'1'
