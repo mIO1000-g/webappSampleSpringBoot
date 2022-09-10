@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sample.dao.TableReferenceDao;
 import com.sample.form.TableReferenceForm;
 import com.sample.form.TableReferenceRecord;
+import com.sample.util.Util;
 
 @Service
 public class TableReferenceService {
@@ -30,15 +31,15 @@ public class TableReferenceService {
 			TableReferenceRecord rec = new TableReferenceRecord();
 
 			rec.setNo(Integer.toString(cnt++));
-			rec.setEmployeeId(String.valueOf(map.get("employee_id")));
-			rec.setName(String.valueOf(map.get("name")));
-			rec.setGenderName(String.valueOf(map.get("gender_name")));
-			rec.setBirthday(String.valueOf(map.get("birthday")));
-			rec.setEnteringDate(String.valueOf(map.get("entering_date")));
-			rec.setRetirementDate(String.valueOf(map.get("retirement_date")));
-			rec.setDepartmentId(String.valueOf(map.get("department_id")));
-			rec.setDepartmentName(String.valueOf(map.get("department_name")));
-			rec.setUpdateDate(String.valueOf(map.get("update_date")));
+			rec.setEmployeeId(Util.convertToString(map.get("employee_id")));
+			rec.setName(Util.convertToString(map.get("name")));
+			rec.setGenderName(Util.convertToString(map.get("gender_name")));
+			rec.setBirthday(Util.convertDateTimeString(map.get("birthday"), "yyyyMMdd", "yyyy/MM/dd"));
+			rec.setEnteringDate(Util.convertDateTimeString(map.get("entering_date"), "yyyyMMdd", "yyyy/MM/dd"));
+			rec.setRetirementDate(Util.convertDateTimeString(map.get("retirement_date"), "yyyyMMdd", "yyyy/MM/dd"));
+			rec.setDepartmentId(Util.convertToString(map.get("department_id")));
+			rec.setDepartmentName(Util.convertToString(map.get("department_name")));
+			rec.setUpdateDate(Util.convertToString(map.get("update_date")));
 
 			list.add(rec);
 		}

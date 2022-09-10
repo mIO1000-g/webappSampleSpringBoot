@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+/* エリアごとのスタイル */
+#condition-area {
+	height: 50px;
+}
+
+#table-area {
+}
+
+
+
+/* テーブルのスタイル */
+table {
+	border-collapse: separate;
+	border-spacing: 0px;
+	width: 98%;
+	margin: 0 auto;
+}
+table th ,td {
+	border:1px solid;
+	border-color: #c0c0c0;
+	box-sizing: border-box;
+}
+table th {
+	background-color: #5f9ea0;
+	color: #f0fff0;
+}
+
+tbody tr:nth-of-type(odd) td {
+	background-color: #eeeeee;
+	background-clip: padding-box;
+}
+tbody tr:nth-of-type(even) td {
+	background-color: #ffffff;
+	background-clip: padding-box;
+}

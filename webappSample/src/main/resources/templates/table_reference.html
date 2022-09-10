@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>一覧参照</title>
+  <meta charset="UTF-8">
+  <title>一覧参照</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/table_reference.css}"/>
 </head>
 <body>
   <form method="post" th:object="${form}">
     <div>
       <h2>社員マスタ検索</h2>
     </div>
-    <div>
+    <div id="condition-area">
       <label for="employeeId">社員ID</label>
       <input type="text" th:field="*{employeeId}">
       <label for="name">社員名</label>
       <input type="text" th:field="*{name}">
+      <label>性別</label>
       <label for="gender_m">男</label>
       <input type="checkbox" th:field="*{gender_m}">
       <label for="gender_f">女</label>
@@ -27,7 +29,7 @@
       <button id="searchB" type="submit" formaction="/table_reference/search">検索</button>
     </div>
 
-    <div>
+    <div id="table-area">
       <table>
         <thead>
           <tr>
