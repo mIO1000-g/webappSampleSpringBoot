@@ -3,7 +3,6 @@ package com.sample.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +17,7 @@ public class TableReferenceController {
 	TableReferenceService sv;
 
 	@GetMapping("")
-	public String init(@ModelAttribute("form") TableReferenceForm form) {
+	public String init(TableReferenceForm form) {
 		
 		form.setRetired(false);
 
@@ -26,7 +25,7 @@ public class TableReferenceController {
 	}
 	
 	@PostMapping("/search")
-	public String search(@ModelAttribute("form") TableReferenceForm form) {
+	public String search(TableReferenceForm form) {
 		
 		sv.search(form);
 

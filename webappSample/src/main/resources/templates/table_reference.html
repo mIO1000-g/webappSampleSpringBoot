@@ -6,12 +6,14 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/table_reference.css}"/>
 </head>
 <body>
-  <form method="post" th:object="${form}">
+  <a th:href="@{/table_reference/(locale='en')}">English</a>
+  <a th:href="@{/table_reference/(locale='ja')}">Japanese</a>
+  <form method="post" th:object="${tableReferenceForm}">
     <div>
       <h2>社員マスタ検索</h2>
     </div>
     <div id="condition-area">
-      <label for="employeeId">社員ID</label>
+      <label for="employeeId" th:text="#{table_reference.employeeId}">社員ID</label>
       <input type="text" th:field="*{employeeId}">
       <label for="name">社員名</label>
       <input type="text" th:field="*{name}">
@@ -34,7 +36,7 @@
         <thead>
           <tr>
             <th>No.</th>
-            <th>社員ID</th>
+            <th th:text="#{table_reference.employeeId}">社員ID</th>
             <th>社員名</th>
             <th>性別</th>
             <th>生年月日</th>
