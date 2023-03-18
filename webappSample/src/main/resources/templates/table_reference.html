@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>一覧参照</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/css/table_reference.css}"/>
+<meta charset="UTF-8">
+<title>一覧参照</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/table_reference.css}" />
 </head>
 <body>
-  <a th:href="@{/table_reference/(locale='en')}">English</a>
-  <a th:href="@{/table_reference/(locale='ja')}">Japanese</a>
+  <div>
+    <h2>社員マスタ検索</h2>
+  </div>
   <form method="post" th:object="${tableReferenceForm}">
-    <div>
-      <h2>社員マスタ検索</h2>
-    </div>
     <div id="condition-area">
       <label for="employeeId" th:text="#{table_reference.employeeId}">社員ID</label>
       <input type="text" th:field="*{employeeId}">
       <label for="name">社員名</label>
       <input type="text" th:field="*{name}">
-      <label>性別</label>
-      <label for="gender_m">男</label>
+      <label>性別</label> <label for="gender_m">男</label>
       <input type="checkbox" th:field="*{gender_m}">
       <label for="gender_f">女</label>
       <input type="checkbox" th:field="*{gender_f}">
@@ -28,7 +25,7 @@
       <input type="checkbox" th:field="*{retired}">
       <label for="departmentId">部署</label>
       <input type="text" th:field="*{departmentId}">
-      <button id="searchB" type="submit" formaction="/table_reference/search">検索</button>
+      <button id="searchB" type="submit" th:formaction="@{/table_reference/search}">検索</button>
     </div>
 
     <div id="table-area">
@@ -36,13 +33,14 @@
         <thead>
           <tr>
             <th>No.</th>
-            <th th:text="#{table_reference.employeeId}">社員ID</th>
+            <th>社員ID</th>
             <th>社員名</th>
             <th>性別</th>
             <th>生年月日</th>
             <th>入社年月日</th>
             <th>退社年月日</th>
             <th>部署</th>
+            <th>編集</th>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +53,9 @@
             <td th:text="${dt.enteringDate}">入社年月日</td>
             <td th:text="${dt.retirementDate}">退社年月日</td>
             <td th:text="${dt.departmentName}">部署</td>
+            <td>
+              <a th:href="@{'/record_update/?screenMode=2&employeeId=' + ${dt.employeeId}}">編集</a>
+            </td>
           </tr>
         </tbody>
       </table>

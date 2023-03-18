@@ -12,6 +12,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+/**
+ * @author msend
+ * メッセージ設定
+ */
 @Configuration
 public class MessageConfig implements WebMvcConfigurer {
 
@@ -26,20 +30,34 @@ public class MessageConfig implements WebMvcConfigurer {
 		return messageSource;
 	}
 	
+	/**
+	 * 切り替えたロケールを保存するロケールリゾルバー
+	 * @return LocaleResolver
+	 */
 	@Bean
 	public LocaleResolver localeResolver() {
+		// HTTPセッションに保存したロケールを利用
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
+		// デフォルトロケールの指定
 		resolver.setDefaultLocale(Locale.JAPANESE);
 		return resolver;
 	}
 
+	/**
+	 * UIを使用してロケールを切り替える機能をサポートするインターセプタ
+	 * @return LocaleChangeInterceptor
+	 */
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+		// ロケールのリクエストパラメータのnameを指定
 		lci.setParamName("locale");
 		return lci;
 	}
 
+	/**
+	 * インターセプタ登録
+	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());

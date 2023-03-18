@@ -2,11 +2,13 @@ package com.sample.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class Util {
+public final class Util {
 
-	public static String convertToString(Object obj) {
+	public final static String convertToString(Object obj) {
 
 		if (obj == null)
 			return "";
@@ -14,7 +16,7 @@ public class Util {
 		return String.valueOf(obj);
 	}
 
-	public static String convertDateTimeString(Object obj, String fromFormat, String toFormat) {
+	public final static String convertDateTimeString(Object obj, String fromFormat, String toFormat) {
 
 		if (obj == null)
 			return "";
@@ -29,5 +31,11 @@ public class Util {
 			return "";
 		}
 
+	}
+	
+	public final static String getNow(String format) {
+		LocalDateTime ldt = LocalDateTime.now();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format);
+		return dtf.format(ldt);
 	}
 }

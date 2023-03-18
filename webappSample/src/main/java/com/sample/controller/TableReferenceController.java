@@ -10,13 +10,13 @@ import com.sample.form.TableReferenceForm;
 import com.sample.service.TableReferenceService;
 
 @Controller
-@RequestMapping("table_reference")
+@RequestMapping("/table_reference")
 public class TableReferenceController {
 
 	@Autowired
 	TableReferenceService sv;
 
-	@GetMapping("")
+	@GetMapping("/")
 	public String init(TableReferenceForm form) {
 		
 		form.setRetired(false);
