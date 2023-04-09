@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>単票更新</title>
+<link rel="stylesheet" type="text/css"  th:href=@{/css/record_update.css}>
 </head>
 <body>
   <header>
@@ -13,38 +14,55 @@
   <main>
     <form method="post" th:object="${recordUpdateForm}">
       <div class="command-area">
-        <button id="resetB" type="submit" th:formaction="@{/record_update/}">リセット</button>
+        <button id="resetB" type="submit" formmethod="get" th:formaction="@{/record_update/}">リセット</button>
         <button id="confirmB" type="submit" th:formaction="@{/record_update/confirm}">確定</button>
         <button id="deleteB" type="submit" th:formaction="@{/record_update/delete}">削除</button>
       </div>
+      <div class="error-erea">
+      </div>
       <div class="record-area">
-        <label for="employeeId">社員ID</label>
-        <input type="text" th:field="*{employeeId}">
-        <span class="errorStr" th:errors="*{employeeId}"></span>
-        <label for="name">社員名</label>
-        <input type="text" th:field="*{name}">
-        <span class="errorStr" th:errors="*{name}"></span>
-        <label>性別</label> <label for="gender_m">男</label>
-        <input type="radio" name="gender" value="M" th:checked="M == *{gender}">
-        <label for="gender_f">女</label>
-        <input type="radio" name="gender" value="F" th:checked="F == *{gender}">
-        <span class="errorStr" th:errors="*{gender}"></span>
-        <label for="birthday">生年月日</label>
-        <input type="text" th:field="*{birthday}">
-        <span class="errorStr" th:errors="*{birthday}"></span>
-        <label for="enteringDate">入社年</label>
-        <input type="date" th:field="*{enteringDate}">
-        <span class="errorStr" th:errors="*{enteringDate}"></span>
-        <label for="retirementDate">退社年</label>
-        <input type="text" th:field="*{retirementDate}">
-        <span class="errorStr" th:errors="*{retirementDate}"></span>
-        <label for="departmentId">部署</label>
-        <select id="departmentId" name="departmentId">
-          <option></option>
-          <option th:each="department : *{departmentList}" th:value="${department.departmentId}" th:text="${department.departmentName}"
-            th:selected="${department.departmentId} == *{departmentId}"></option>
-        </select>
-        <span class="errorStr" th:errors="*{departmentId}"></span>
+        <div>
+          <label for="employeeId">社員ID</label>
+          <input type="text" th:field="*{employeeId}" th:readonly="2 == *{screenMode}">
+          <span class="errorStr" th:errors="*{employeeId}"></span>
+        </div>
+        <div>
+          <label for="name">社員名</label>
+          <input type="text" th:field="*{name}" th:readonly="2 == *{screenMode}">
+          <span class="errorStr" th:errors="*{name}"></span>
+        </div>
+        <div>
+          <label>性別</label>
+          <label for="gender_m" class="reset-inline-block">男</label>
+          <input type="radio" name="gender" value="M" th:checked="M == *{gender}">
+          <label for="gender_f" class="reset-inline-block">女</label>
+          <input type="radio" name="gender" value="F" th:checked="F == *{gender}">
+          <span class="errorStr" th:errors="*{gender}"></span>
+        </div>
+        <div>
+          <label for="birthday">生年月日</label>
+          <input type="date" th:field="*{birthday}">
+          <span class="errorStr" th:errors="*{birthday}"></span>
+        </div>
+        <div>
+          <label for="enteringDate">入社年月日</label>
+          <input type="date" th:field="*{enteringDate}">
+          <span class="errorStr" th:errors="*{enteringDate}"></span>
+        </div>
+        <div>
+          <label for="retirementDate">退社年月日</label>
+          <input type="date" th:field="*{retirementDate}">
+          <span class="errorStr" th:errors="*{retirementDate}"></span>
+        </div>
+        <div>
+          <label for="departmentId">部署</label>
+          <select id="departmentId" name="departmentId">
+            <option></option>
+            <option th:each="department : *{departmentList}" th:value="${department.departmentId}" th:text="${department.departmentName}"
+              th:selected="${department.departmentId} == *{departmentId}"></option>
+          </select>
+          <span class="errorStr" th:errors="*{departmentId}"></span>
+        </div>
         <input type="hidden" th:field="*{screenMode}">
       </div>
     </form>

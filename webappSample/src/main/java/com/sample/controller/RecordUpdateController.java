@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sample.exception.ApplicationCustomException;
 import com.sample.form.RecordUpdateForm;
 import com.sample.service.RecordUpdateService;
 import com.sample.util.Constant;
@@ -20,7 +21,7 @@ public class RecordUpdateController {
 
 	@Autowired
 	RecordUpdateService sv;
-	
+
 	@ModelAttribute
 	public RecordUpdateForm resetForm(RecordUpdateForm form) {
 		form.setDepartmentList(sv.getDepartmentList());
@@ -36,27 +37,46 @@ public class RecordUpdateController {
 	}
 
 	@PostMapping("/confirm")
-	public String confirm(@Validated @ModelAttribute(name="recordUpdateForm") RecordUpdateForm form, BindingResult br, RedirectAttributes redirect) {
+	public String confirm(@Validated @ModelAttribute(name = "recordUpdateForm") RecordUpdateForm form, BindingResult br,
+			RedirectAttributes redirect) {
 		System.out.println(br.getErrorCount());
 		if (br.hasErrors()) {
-			
 			return "record_update";
 		}
-		
-		if (Constant.SCREEN_MODE_ADD.equals(form.getScreenMode())) {
-			sv.insert(form);
-		} else {
-			sv.update(form);
+
+		try {
+			if (Constant.SCREEN_MODE_ADD.equals(form.getScreenMode())) {
+				sv.insert(form);
+			} else {
+				sv.update(form);
+			}
+		} catch (ApplicationCustomException ex) {
+			// TODO　エラー処理
+			System.out.println(ex.getMessage());
+			return "record_update";
 		}
-		
+
 		form.setScreenMode(Constant.SCREEN_MODE_EDIT);
 		redirect.addFlashAttribute(form);
 		return "redirect:/record_update/";
 	}
-	
+
 	@PostMapping("/delete")
-	public String delete(@Validated RecordUpdateForm form, BindingResult br, RedirectAttributes redirect) {
-		sv.delete(form);
+	public String delete(@Validated @ModelAttribute(name = "recordUpdateForm") RecordUpdateForm form, BindingResult br,
+			RedirectAttributes redirect) {
+		System.out.println(br.getErrorCount());
+		if (br.hasErrors()) {
+			return "record_update";
+		}
+
+		try {
+			sv.delete(form);
+		} catch (ApplicationCustomException ex) {
+			// TODO　エラー処理
+			System.out.println(ex.getMessage());
+			return "record_update";
+		}
+
 		form.setScreenMode(Constant.SCREEN_MODE_EDIT);
 		redirect.addFlashAttribute(form);
 		return "redirect:/record_update/";

@@ -1,0 +1,32 @@
+/* エリアごとのスタイル */
+.command-area {
+	height: 50px;
+}
+
+.record-area {
+	/* 縦並びにする */
+	display: flex;
+	flex-direction: column;
+}
+
+/* アイテムに対するスタイル */
+label {
+	/* 幅指定のために、displayプロパティを指定 */
+	display: inline-block;
+	width: 150px;
+}
+
+/* labelのdisplay指定をリセット */
+.reset-inline-block {
+	display: inline;
+}
+
+input[readonly] {
+	border: none;
+	outline: none;
+}
+
+/* エラー表示 */
+.errorStr {
+	color: red;
+}
