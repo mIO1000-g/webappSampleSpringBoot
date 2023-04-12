@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,10 @@ import com.sample.util.Util;
 @Service
 public class RecordUpdateService {
 
+	private static final Logger logger = LoggerFactory.getLogger(RecordUpdateService.class);
+
 	@Autowired
-	MessageUtil message;
+	private MessageUtil message;
 	@Autowired
 	private RecordUpdateDao dao;
 	@Autowired
@@ -32,6 +36,7 @@ public class RecordUpdateService {
 		Employee employee = empDao.selectByPk(form.getEmployeeId());
 		if (employee == null) {
 			// TODO:エラー
+			logger.warn("データがありません");
 			return;
 		}
 		form.setName(employee.name);
@@ -69,17 +74,21 @@ public class RecordUpdateService {
 
 		Employee employee = null;
 		try {
+			System.out.println("１");
+			logger.info("★update");
+			logger.debug("★update");
 			employee = empDao.selectByPkWithLock(form.getEmployeeId());
 		} catch (CannotAcquireLockException ex) {
 			throw new ApplicationCustomException(message.getMessage("WCOM00004", null));
 		}
-		System.out.println("employee:" + (employee == null));
 		if (employee == null) {
-			System.out.println("employee2:" + employee);
+			System.out.println("２");
+			logger.debug("データなし");
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
-		System.out.println("22");
 		if (!employee.updateDate.equals(form.getUpdateDate())) {
+			System.out.println("３");
+			logger.debug("更新日時不一致 " + employee.updateDate + " " + form.getUpdateDate());
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
 

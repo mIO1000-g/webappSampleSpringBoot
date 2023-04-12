@@ -1,5 +1,7 @@
 package com.sample.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,8 @@ import com.sample.util.Constant;
 @Controller
 @RequestMapping("/record_update")
 public class RecordUpdateController {
+
+	private static final Logger logger = LoggerFactory.getLogger(RecordUpdateController.class);
 
 	@Autowired
 	RecordUpdateService sv;
@@ -39,7 +43,8 @@ public class RecordUpdateController {
 	@PostMapping("/confirm")
 	public String confirm(@Validated @ModelAttribute(name = "recordUpdateForm") RecordUpdateForm form, BindingResult br,
 			RedirectAttributes redirect) {
-		System.out.println(br.getErrorCount());
+		logger.info("エラー件数=" + Integer.toString(br.getErrorCount()));
+		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
 		if (br.hasErrors()) {
 			return "record_update";
 		}
@@ -51,8 +56,7 @@ public class RecordUpdateController {
 				sv.update(form);
 			}
 		} catch (ApplicationCustomException ex) {
-			// TODO　エラー処理
-			System.out.println(ex.getMessage());
+			logger.warn(ex.getMessage());
 			return "record_update";
 		}
 
@@ -64,7 +68,7 @@ public class RecordUpdateController {
 	@PostMapping("/delete")
 	public String delete(@Validated @ModelAttribute(name = "recordUpdateForm") RecordUpdateForm form, BindingResult br,
 			RedirectAttributes redirect) {
-		System.out.println(br.getErrorCount());
+		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
 		if (br.hasErrors()) {
 			return "record_update";
 		}
@@ -72,8 +76,7 @@ public class RecordUpdateController {
 		try {
 			sv.delete(form);
 		} catch (ApplicationCustomException ex) {
-			// TODO　エラー処理
-			System.out.println(ex.getMessage());
+			logger.warn(ex.getMessage());
 			return "record_update";
 		}
 
