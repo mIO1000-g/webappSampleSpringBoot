@@ -4,18 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.exception.ApplicationCustomException;
 import com.sample.form.RecordUpdateForm;
 import com.sample.service.RecordUpdateService;
 import com.sample.util.Constant;
+import com.sample.util.MessageUtil;
 
 @Controller
 @RequestMapping("/record_update")
@@ -23,6 +25,8 @@ public class RecordUpdateController {
 
 	private static final Logger logger = LoggerFactory.getLogger(RecordUpdateController.class);
 
+	@Autowired
+	private MessageUtil message;
 	@Autowired
 	RecordUpdateService sv;
 
@@ -32,20 +36,30 @@ public class RecordUpdateController {
 		return form;
 	}
 
-	@GetMapping("/")
-	public String init(RecordUpdateForm form) {
+	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
+	public String init(RecordUpdateForm form, Model model) {
 		if (Constant.SCREEN_MODE_EDIT.equals(form.getScreenMode())) {
-			sv.init(form);
+
+			try {
+				// 編集モードの場合、検索
+				sv.init(form);
+			} catch (ApplicationCustomException ex) {
+				model.addAttribute("message", ex.getMessage());
+			}
+
+		} else {
+			// 上記以外は追加モードとみなす
+			form.setScreenMode(Constant.SCREEN_MODE_ADD);
 		}
 		return "record_update";
 	}
 
 	@PostMapping("/confirm")
 	public String confirm(@Validated @ModelAttribute(name = "recordUpdateForm") RecordUpdateForm form, BindingResult br,
-			RedirectAttributes redirect) {
-		logger.info("エラー件数=" + Integer.toString(br.getErrorCount()));
+			Model model, RedirectAttributes redirect) {
 		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
 		if (br.hasErrors()) {
+			model.addAttribute("message", message.getMessage("WCOM00002", null));
 			return "record_update";
 		}
 
@@ -56,7 +70,7 @@ public class RecordUpdateController {
 				sv.update(form);
 			}
 		} catch (ApplicationCustomException ex) {
-			logger.warn(ex.getMessage());
+			model.addAttribute("message", ex.getMessage());
 			return "record_update";
 		}
 
@@ -67,16 +81,17 @@ public class RecordUpdateController {
 
 	@PostMapping("/delete")
 	public String delete(@Validated @ModelAttribute(name = "recordUpdateForm") RecordUpdateForm form, BindingResult br,
-			RedirectAttributes redirect) {
+			Model model, RedirectAttributes redirect) {
 		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
 		if (br.hasErrors()) {
+			model.addAttribute("message", message.getMessage("WCOM00002", null));
 			return "record_update";
 		}
 
 		try {
 			sv.delete(form);
 		} catch (ApplicationCustomException ex) {
-			logger.warn(ex.getMessage());
+			model.addAttribute("message", ex.getMessage());
 			return "record_update";
 		}
 

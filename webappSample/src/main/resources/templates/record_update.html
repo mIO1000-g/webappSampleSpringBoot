@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>単票更新</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <link rel="stylesheet" type="text/css"  th:href=@{/css/record_update.css}>
 </head>
 <body>
@@ -14,7 +17,7 @@
   <main>
     <form method="post" th:object="${recordUpdateForm}">
       <div class="command-area">
-        <button id="resetB" type="submit" formmethod="get" th:formaction="@{/record_update/}">リセット</button>
+        <button id="resetB" type="submit" formmethod="post" th:formaction="@{/record_update/}">リセット</button>
         <button id="confirmB" type="submit" th:formaction="@{/record_update/confirm}">確定</button>
         <button id="deleteB" type="submit" th:formaction="@{/record_update/delete}">削除</button>
       </div>
@@ -68,5 +71,30 @@
       </div>
     </form>
   </main>
+  <div id="messageModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">メッセージ</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>[[${message}]]</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script th:inline="javascript">
+    let message = /*[[${message}]]*/"";
+    if(message) {
+      // メッセージがある場合、モーダル表示
+      $("#messageModal").modal();
+    }
+  </script>
 </body>
 </html>

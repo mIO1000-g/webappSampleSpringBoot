@@ -3,13 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>一覧参照</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/table_reference.css}" />
 </head>
 <body>
   <div>
     <h2>社員マスタ検索</h2>
   </div>
-  <form method="post" th:object="${tableReferenceForm}">
+  <form id="form" method="post" th:object="${tableReferenceForm}">
     <div id="condition-area">
       <label for="employeeId" th:text="#{table_reference.employeeId}">社員ID</label>
       <input type="text" th:field="*{employeeId}">
@@ -54,12 +56,14 @@
             <td th:text="${dt.retirementDate}">退社年月日</td>
             <td th:text="${dt.departmentName}">部署</td>
             <td>
-              <a th:href="@{'/record_update/?screenMode=2&employeeId=' + ${dt.employeeId}}">編集</a>
+              <button th:data-employeeId="${dt.employeeId}" class="btn btn-link">編集</button>
+              <!-- <a th:href="@{'/record_update/?screenMode=2&employeeId=' + ${dt.employeeId}}">編集</a> -->
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </form>
+  <script th:src="@{/js/table_reference.js}"></script>
 </body>
 </html>

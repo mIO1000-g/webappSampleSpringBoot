@@ -35,9 +35,9 @@ public class RecordUpdateService {
 	public void init(RecordUpdateForm form) {
 		Employee employee = empDao.selectByPk(form.getEmployeeId());
 		if (employee == null) {
-			// TODO:エラー
-			logger.warn("データがありません");
-			return;
+			// データがない場合
+			logger.warn(message.getMessage("WCOM00005", null));
+			throw new ApplicationCustomException(message.getMessage("WCOM00005", null));
 		}
 		form.setName(employee.name);
 		form.setGender(employee.gender);
@@ -46,6 +46,8 @@ public class RecordUpdateService {
 		form.setRetirementDate(Util.convertDateTimeString(employee.retirementDate, "yyyyMMdd", "yyyy-MM-dd"));
 		form.setDepartmentId(employee.departmentId);
 		form.setUpdateDate(employee.updateDate);
+		
+		return;
 	}
 
 	@Transactional
@@ -74,21 +76,19 @@ public class RecordUpdateService {
 
 		Employee employee = null;
 		try {
-			System.out.println("１");
-			logger.info("★update");
 			logger.debug("★update");
 			employee = empDao.selectByPkWithLock(form.getEmployeeId());
 		} catch (CannotAcquireLockException ex) {
+			logger.warn(message.getMessage("WCOM00004", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00004", null));
 		}
 		if (employee == null) {
-			System.out.println("２");
-			logger.debug("データなし");
+			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
 		if (!employee.updateDate.equals(form.getUpdateDate())) {
-			System.out.println("３");
 			logger.debug("更新日時不一致 " + employee.updateDate + " " + form.getUpdateDate());
+			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
 
@@ -116,13 +116,16 @@ public class RecordUpdateService {
 		try {
 			employee = empDao.selectByPkWithLock(form.getEmployeeId());
 		} catch (CannotAcquireLockException ex) {
+			logger.warn(message.getMessage("WCOM00004", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00004", null));
 		}
-
 		if (employee == null) {
+			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
 		if (!employee.updateDate.equals(form.getUpdateDate())) {
+			logger.debug("更新日時不一致 " + employee.updateDate + " " + form.getUpdateDate());
+			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
 
