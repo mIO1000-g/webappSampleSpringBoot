@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>一覧参照</title>
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/table_reference.css}" />
 </head>
@@ -57,13 +57,30 @@
             <td th:text="${dt.departmentName}">部署</td>
             <td>
               <button th:data-employeeId="${dt.employeeId}" class="btn btn-link">編集</button>
-              <!-- <a th:href="@{'/record_update/?screenMode=2&employeeId=' + ${dt.employeeId}}">編集</a> -->
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </form>
+  <div th:if="${page != null}">
+    <ul>
+      <li style="display: inline;">
+        <span th:if="${page.first}">&lt;&lt;前</span>
+        <a th:if="${!page.first}" th:href="@{/table_reference/search(page = ${page.number} - 1)}"> &lt;&lt;前 </a>
+      </li>
+      <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" style="display: inline; margin-left: 10px;">
+        <span th:if="${i} == ${page.number}" th:text="${i + 1}">1</span>
+        <a th:if="${i} != ${page.number}" th:href="@{/table_reference/search(page = ${i})}">
+          <span th:text="${i+1}">1</span>
+        </a>
+      </li>
+      <li style="display: inline; margin-left: 10px;">
+        <span th:if="${page.last}">次&gt;&gt;</span>
+        <a th:if="${!page.last}" th:href="@{/table_reference/search(page = (${page.number} + 1))}"> 次&gt;&gt; </a>
+      </li>
+    </ul>
+  </div>
   <script th:src="@{/js/table_reference.js}"></script>
 </body>
 </html>

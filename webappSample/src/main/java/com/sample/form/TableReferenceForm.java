@@ -22,5 +22,6 @@ public class TableReferenceForm {
 	private String departmentId;
 	
 	private List<TableReferenceRecord> detail;
+
 	
 }

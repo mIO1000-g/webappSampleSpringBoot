@@ -6,6 +6,7 @@ import java.util.Map;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.boot.ConfigAutowireable;
+import org.seasar.doma.jdbc.SelectOptions;
 
 import com.sample.form.TableReferenceForm;
 
@@ -37,4 +38,7 @@ public interface TableReferenceDao {
 
 	@Select
 	public List<Map<String, Object>> selectDetail(TableReferenceForm form);
+	
+	@Select
+	public List<Map<String, Object>> selectDetailPageable(SelectOptions options, TableReferenceForm form);
 }
