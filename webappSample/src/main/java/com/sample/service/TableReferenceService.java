@@ -65,7 +65,7 @@ public class TableReferenceService {
 		
 		List<TableReferenceRecord> list = new ArrayList<>();
 
-		int cnt = 1;
+		int cnt = pageable.getPageSize() * (pageable.getPageNumber()) + 1;
 
 		for (Map<String, Object> map : detail) {
 

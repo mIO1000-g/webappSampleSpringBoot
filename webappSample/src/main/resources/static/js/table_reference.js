@@ -18,4 +18,16 @@ $(function() {
 		});
 		form.submit();
 	});
+	
+	$("a").on("click", function() {
+		let page = $(this).attr("data-page");
+		let form = document.getElementById("form");
+		form.action = "/webappSample/table_reference/search";
+		form.method = "post";
+		form.addEventListener("formdata",(e) => {
+			let fd = e.formData;
+			fd.set("page", page);
+		});
+		form.submit();
+	});
 })
