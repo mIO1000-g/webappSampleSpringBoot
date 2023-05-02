@@ -23,9 +23,9 @@ public class Employee {
 	public String retirementDate;
 	@Column(name="department_id")
 	public String departmentId;
-	@Column(name="insert_user")
+	@Column(name="insert_user", updatable=false)
 	public String insertUser;
-	@Column(name="insert_date")
+	@Column(name="insert_date", updatable=false)
 	public String insertDate;
 	@Column(name="update_user")
 	public String updateUser;

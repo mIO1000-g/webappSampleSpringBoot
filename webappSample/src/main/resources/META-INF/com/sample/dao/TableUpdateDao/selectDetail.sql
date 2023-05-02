@@ -2,7 +2,6 @@ select
  m1.employee_id
 ,m1.name
 ,m1.gender
-,case when m1.gender = 'M' then '男' else '女' end as gender_name 
 ,m1.birthday
 ,m1.entering_date
 ,m1.retirement_date

@@ -1,13 +1,8 @@
 package com.sample.form;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class TableReferenceRecord {
 
 	private String no;

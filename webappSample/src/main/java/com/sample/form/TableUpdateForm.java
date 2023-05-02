@@ -1,12 +1,14 @@
 package com.sample.form;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import lombok.Data;
 
 @Data
-public class TableReferenceForm {
-
+public class TableUpdateForm {
 
 	private String employeeId;
 	private String name;
@@ -15,8 +17,10 @@ public class TableReferenceForm {
 	private String enteringYear;
 	private boolean retired;
 	private String departmentId;
-	
-	private List<TableReferenceRecord> detail;
 
-	
+	List<Map<String, String>> departmentList;
+
+	@Valid
+	private List<TableUpdateRecord> detail;
+
 }

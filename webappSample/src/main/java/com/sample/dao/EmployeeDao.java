@@ -16,7 +16,7 @@ public interface EmployeeDao {
 	@Insert
 	int insert(Employee employee);
 	
-	@Update(excludeNull = true)
+	@Update
 	int update(Employee employee);
 	
 	@Delete

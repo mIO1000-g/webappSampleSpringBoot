@@ -8,7 +8,7 @@ select
 ,m1.retirement_date
 ,m1.department_id
 ,m2.department_name
-,m2.update_date
+,m1.update_date
 from m_employee m1
 inner join m_department m2
 on 1=1

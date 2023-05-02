@@ -11,7 +11,7 @@ public final class Util {
 	public final static String convertToString(Object obj) {
 
 		if (obj == null)
-			return "";
+			return null;
 
 		return String.valueOf(obj);
 	}
@@ -19,7 +19,7 @@ public final class Util {
 	public final static String convertDateTimeString(Object obj, String fromFormat, String toFormat) {
 
 		if (obj == null)
-			return "";
+			return null;
 
 		SimpleDateFormat sdfFrom = new SimpleDateFormat(fromFormat);
 		SimpleDateFormat sdfTo = new SimpleDateFormat(toFormat);
@@ -28,7 +28,7 @@ public final class Util {
 			Date dt = sdfFrom.parse(String.valueOf(obj));
 			return sdfTo.format(dt);
 		} catch (ParseException ex) {
-			return "";
+			return null;
 		}
 
 	}

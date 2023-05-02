@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>一覧更新</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/table_update.css}" />
+</head>
+<body>
+  <header>
+    <div class="form-name">
+      <h2>社員マスタ一覧更新</h2>
+    </div>
+  </header>
+  <main>
+    <form id="form" method="post" th:object="${tableUpdateForm}">
+      <div class="condition-area">
+        <label for="employeeId">社員ID</label>
+        <input type="text" th:field="*{employeeId}">
+        <label for="name">社員名</label>
+        <input type="text" th:field="*{name}">
+        <label>性別</label> <label for="gender_m">男</label>
+        <input type="checkbox" th:field="*{gender_m}">
+        <label for="gender_f">女</label>
+        <input type="checkbox" th:field="*{gender_f}">
+        <label for="enteringYear">入社年</label>
+        <input type="text" th:field="*{enteringYear}">
+        <label for="retired">退職済</label>
+        <input type="checkbox" th:field="*{retired}">
+        <label for="departmentId">部署</label>
+        <select id="departmentId" name="departmentId">
+          <option></option>
+          <option th:each="department : *{departmentList}" th:value="${department.departmentId}" th:text="${department.departmentName}"
+            th:selected="${department.departmentId} == *{departmentId}"></option>
+        </select>
+        <button id="searchB" type="submit" th:formaction="@{/table_update/search}">検索</button>
+      </div>
+      <div class="command-area">
+        <button id="addLineB" type="submit">行追加</button>
+        <button id="confirmB" type="submit" th:formaction="@{/table_update/confirm}">確定</button>
+      </div>
+
+      <div class="table-area">
+        <table id="sticky-table">
+          <thead>
+            <tr>
+              <th>選択</th>
+              <th>No.</th>
+              <th>社員ID</th>
+              <th>社員名</th>
+              <th>性別</th>
+              <th>生年月日</th>
+              <th>入社年月日</th>
+              <th>退社年月日</th>
+              <th>部署</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="dt, stat : *{detail}">
+              <td>
+                <input type="checkbox" th:field="*{detail[__${stat.index}__].checked}">
+                <input type="hidden" th:field="*{detail[__${stat.index}__].newLine}">
+                <input type="hidden" th:field="*{detail[__${stat.index}__].updateDate}">
+              </td>
+              <td>
+                <input type="text" th:field="*{detail[__${stat.index}__].no}" tabindex="-1" readonly>
+              </td>
+              <td>
+                <input type="text" th:field="*{detail[__${stat.index}__].employeeId}" tabindex="-1" readonly>
+              </td>
+              <td class="error-tooltip">
+                <input type="text" th:classappend="${#fields.hasErrors('*{detail[__${stat.index}__].name}')} ? 'has-error'"
+                  th:field="*{detail[__${stat.index}__].name}">
+                <span class="error-tooltip-text"
+                  th:if="${#fields.hasErrors('*{detail[__${stat.index}__].name}')}"
+                  th:errors="*{detail[__${stat.index}__].name}"></span>
+              </td>
+              <td class="error-tooltip">
+                <select th:classappend="${#fields.hasErrors('*{detail[__${stat.index}__].gender}')} ? 'has-error'"
+                  th:id="detail__${stat.index}__.gender" th:name="detail[__${stat.index}__].gender">
+                  <option></option>
+                  <option value="M" th:selected="M == *{detail[__${stat.index}__].gender}">男</option>
+                  <option value="F" th:selected="F == *{detail[__${stat.index}__].gender}">女</option>
+                </select>
+                <span class="error-tooltip-text"
+                  th:if="${#fields.hasErrors('*{detail[__${stat.index}__].gender}')}"
+                  th:errors="*{detail[__${stat.index}__].gender}"></span>
+              </td>
+              <td class="error-tooltip">
+                <input th:classappend="${#fields.hasErrors('*{detail[__${stat.index}__].birthday}')} ? 'has-error'"
+                  type="date" th:field="*{detail[__${stat.index}__].birthday}">
+                <span class="error-tooltip-text"
+                  th:if="${#fields.hasErrors('*{detail[__${stat.index}__].birthday}')}"
+                  th:errors="*{detail[__${stat.index}__].birthday}"></span>
+              </td>
+              <td class="error-tooltip">
+                <input type="date" th:classappend="${#fields.hasErrors('*{detail[__${stat.index}__].enteringDate}')} ? 'has-error'"
+                  th:field="*{detail[__${stat.index}__].enteringDate}">
+                <span class="error-tooltip-text"
+                  th:if="${#fields.hasErrors('*{detail[__${stat.index}__].enteringDate}')}"
+                  th:errors="*{detail[__${stat.index}__].enteringDate}"></span>
+              </td>
+              <td class="error-tooltip">
+                <input type="date" th:classappend="${#fields.hasErrors('*{detail[__${stat.index}__].retirementDate}')} ? 'has-error'"
+                  th:field="*{detail[__${stat.index}__].retirementDate}">
+                <span class="error-tooltip-text"
+                  th:if="${#fields.hasErrors('*{detail[__${stat.index}__].retirementDate}')}"
+                  th:errors="*{detail[__${stat.index}__].retirementDate}"></span>
+              </td>
+              <td>
+                <select th:id="detail__${stat.index}__.departmentId" th:name="detail[__${stat.index}__].departmentId">
+                  <option th:each="department : *{departmentList}" th:value="${department.departmentId}" th:text="${department.departmentName}"
+                    th:selected="${department.departmentId} == *{detail[__${stat.index}__].departmentId}"></option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </main>
+  <div id="messageModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">メッセージ</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>[[${message}]]</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script th:inline="javascript">
+			let message = /*[[${message}]]*/"";
+			if (message) {
+				// メッセージがある場合、モーダル表示
+				$("#messageModal").modal();
+			}
+		</script>
+</body>
+</html>
