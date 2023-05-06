@@ -13,20 +13,20 @@ public class TableUpdateRecord {
 	private boolean checked;
 	private String no;
 	@NotBlank
-	@Size(max=10)
+	@Size(max = 10)
 	private String employeeId;
 	@NotBlank
-	@Size(max=30)
+	@Size(max = 30)
 	private String name;
 	@NotBlank
 	private String gender;
 	@NotBlank
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private String birthday;
 	@NotBlank
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private String enteringDate;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private String retirementDate;
 	@NotBlank
 	private String departmentId;

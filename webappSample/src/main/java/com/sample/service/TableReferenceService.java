@@ -18,6 +18,10 @@ import com.sample.form.TableReferenceForm;
 import com.sample.form.TableReferenceRecord;
 import com.sample.util.Util;
 
+/**
+ * @author msend
+ * 一覧参照Service
+ */
 @Service
 public class TableReferenceService {
 	
@@ -27,6 +31,10 @@ public class TableReferenceService {
 	@Autowired
 	public TableReferenceDao dao;
 
+	/**
+	 * 検索（ページングなし）
+	 * @param form フォームオブジェクト
+	 */
 	public void search(TableReferenceForm form) {
 
 		List<Map<String, Object>> detail = dao.selectDetail(form);
@@ -58,13 +66,21 @@ public class TableReferenceService {
 		return;
 	}
 
+	/**
+	 * 検索（ページングあり）
+	 * @param form フォームオブジェクト
+	 * @param pageable ページャブルオブジェクト
+	 * @return ページオブジェクト
+	 */
 	public Page<TableReferenceRecord> search(TableReferenceForm form, Pageable pageable) {
 
+		// 検索オプション設定
 		SelectOptions options = createSearchOptions(pageable);
 		List<Map<String, Object>> detail = dao.selectDetailPageable(options, form);
 		
 		List<TableReferenceRecord> list = new ArrayList<>();
 
+		// 「No」を取得するためにオフセット＋１を算出
 		int cnt = pageable.getPageSize() * (pageable.getPageNumber()) + 1;
 
 		for (Map<String, Object> map : detail) {
@@ -86,6 +102,7 @@ public class TableReferenceService {
 		}
 		logger.debug("全体件数=" + options.getCount());
 
+		// ページオブジェクトを生成
 		Page<TableReferenceRecord> page = new PageImpl<>(list, pageable, options.getCount());
 		form.setDetail(page.getContent());
 
@@ -95,8 +112,11 @@ public class TableReferenceService {
 
 	private SelectOptions createSearchOptions(Pageable pageable) {
 		return SelectOptions.get()
+				// オフセットの指定
 				.offset(pageable.getPageSize() * (pageable.getPageNumber()))
+				// １ページあたりの行数
 				.limit(pageable.getPageSize())
+				// 全行の行数を取得する
 				.count();
 	}
 

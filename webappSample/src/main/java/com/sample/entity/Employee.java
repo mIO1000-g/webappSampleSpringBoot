@@ -5,6 +5,10 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
+/**
+ * @author msend
+ * Employeeエンティティ
+ */
 @Entity
 @Table(name="m_employee")
 public class Employee {

@@ -19,13 +19,16 @@ $(function() {
 		form.submit();
 	});
 	
+	// ページャ押下時
 	$("a").on("click", function() {
+		// 現在のページインデックスを取得
 		let page = $(this).attr("data-page");
 		let form = document.getElementById("form");
 		form.action = "/webappSample/table_reference/search";
 		form.method = "post";
 		form.addEventListener("formdata",(e) => {
 			let fd = e.formData;
+			// 現在のページインデックスをリクエストパラメータに追加
 			fd.set("page", page);
 		});
 		form.submit();

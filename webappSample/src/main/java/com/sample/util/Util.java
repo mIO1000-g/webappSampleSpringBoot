@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * @author msend
+ * ユーティリティ
+ */
 public final class Util {
 
 	public final static String convertToString(Object obj) {

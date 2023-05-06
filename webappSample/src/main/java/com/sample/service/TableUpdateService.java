@@ -21,6 +21,10 @@ import com.sample.form.TableUpdateRecord;
 import com.sample.util.MessageUtil;
 import com.sample.util.Util;
 
+/**
+ * @author msend
+ * 一覧更新Service
+ */
 @Service
 public class TableUpdateService {
 	
@@ -35,8 +39,13 @@ public class TableUpdateService {
 	private EmployeeDao empDao;
 
 
+	/**
+	 * 検索
+	 * @param form フォームオブジェクト
+	 */
 	public void search(TableUpdateForm form) {
 
+		// 検索
 		List<Map<String, Object>> detail = dao.selectDetail(form);
 
 		List<TableUpdateRecord> list = new ArrayList<>();
@@ -66,22 +75,33 @@ public class TableUpdateService {
 		return;
 	}
 	
+	/**
+	 * 確定
+	 * @param form フォームオブジェクト
+	 */
 	@Transactional
 	public void confirm(TableUpdateForm form) {
 		
 		for (TableUpdateRecord rec : form.getDetail()) {
 			
+			// 選択行のみ
 			if (!rec.isChecked()) continue;
 			
 			if (rec.isNewLine()) {
+				// 新規行の場合、登録
 				insert(rec);
 			} else {
+				// 上記以外の場合、更新
 				update(rec);
 			}
 		}
 		
 	}
 
+	/**
+	 * 部署ブルダウンリスト取得
+	 * @return 部署ブルダウンリスト
+	 */
 	public List<Map<String, String>> getDepartmentList() {
 
 		List<Map<String, String>> list = new ArrayList<>();

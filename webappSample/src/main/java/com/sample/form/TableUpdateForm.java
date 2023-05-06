@@ -3,8 +3,6 @@ package com.sample.form;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import lombok.Data;
 
 @Data
@@ -20,7 +18,6 @@ public class TableUpdateForm {
 
 	List<Map<String, String>> departmentList;
 
-	@Valid
 	private List<TableUpdateRecord> detail;
 
 }

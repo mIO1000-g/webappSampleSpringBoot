@@ -14,13 +14,18 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
  * @author msend
- * メッセージ設定
+ * メッセージ関連設定
  */
 @Configuration
 public class MessageConfig implements WebMvcConfigurer {
 
+	/**
+	 * MessageSource取得
+	 * @return MessageSource
+	 */
 	@Bean
 	public MessageSource messageSource() {
+		// プロパティファイルに定義したメッセージソースを取得するMessageSourceの実装
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		// プロパティファイルの基底名を設定
 		messageSource.setBasename("i18n/messages");

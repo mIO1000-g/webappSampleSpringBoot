@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class TableReferenceForm {
 
-
 	private String employeeId;
 	private String name;
 	private boolean gender_m;
@@ -15,8 +14,7 @@ public class TableReferenceForm {
 	private String enteringYear;
 	private boolean retired;
 	private String departmentId;
-	
+
 	private List<TableReferenceRecord> detail;
 
-	
 }

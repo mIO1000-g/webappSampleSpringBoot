@@ -14,25 +14,25 @@ import lombok.Data;
 public class RecordUpdateForm {
 
 	@NotBlank
-	@Size(max=10)
+	@Size(max = 10)
 	String employeeId;
 
 	@NotBlank
-	@Size(max=30)
+	@Size(max = 30)
 	String name;
 
 	@NotBlank
 	String gender;
 
 	@NotBlank
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	String birthday;
 
 	@NotBlank
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	String enteringDate;
-	
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	String retirementDate;
 
 	@NotBlank

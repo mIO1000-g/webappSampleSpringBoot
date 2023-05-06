@@ -20,6 +20,10 @@ import com.sample.form.RecordUpdateForm;
 import com.sample.util.MessageUtil;
 import com.sample.util.Util;
 
+/**
+ * @author msend
+ * 単票更新Service
+ */
 @Service
 public class RecordUpdateService {
 
@@ -32,13 +36,21 @@ public class RecordUpdateService {
 	@Autowired
 	private EmployeeDao empDao;
 
+	/**
+	 * 初期表示
+	 * @param form フォームオブジェクト
+	 */
 	public void init(RecordUpdateForm form) {
+
+		// 従業員マスタ検索
 		Employee employee = empDao.selectByPk(form.getEmployeeId());
 		if (employee == null) {
 			// データがない場合
 			logger.warn(message.getMessage("WCOM00005", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00005", null));
 		}
+		
+		// 取得したデータをフォームに設定
 		form.setName(employee.name);
 		form.setGender(employee.gender);
 		form.setBirthday(Util.convertDateTimeString(employee.birthday, "yyyyMMdd", "yyyy-MM-dd"));
@@ -50,6 +62,10 @@ public class RecordUpdateService {
 		return;
 	}
 
+	/**
+	 * 登録
+	 * @param form フォームオブジェクト
+	 */
 	@Transactional
 	public void insert(RecordUpdateForm form) {
 
@@ -71,22 +87,30 @@ public class RecordUpdateService {
 
 	}
 
+	/**
+	 * 更新
+	 * @param form フォームオブジェクト
+	 */
 	@Transactional
 	public void update(RecordUpdateForm form) {
 
 		Employee employee = null;
 		try {
 			logger.debug("★update");
+			// 検索
 			employee = empDao.selectByPkWithLock(form.getEmployeeId());
 		} catch (CannotAcquireLockException ex) {
+			// 排他ロックエラーが発生した場合
 			logger.warn(message.getMessage("WCOM00004", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00004", null));
 		}
 		if (employee == null) {
+			// データがない場合
 			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
 		if (!employee.updateDate.equals(form.getUpdateDate())) {
+			// 楽観排他エラーの場合
 			logger.debug("更新日時不一致 " + employee.updateDate + " " + form.getUpdateDate());
 			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
@@ -109,6 +133,10 @@ public class RecordUpdateService {
 
 	}
 
+	/**
+	 * 削除
+	 * @param form フォームオブジェクト
+	 */
 	@Transactional
 	public void delete(RecordUpdateForm form) {
 
@@ -116,14 +144,17 @@ public class RecordUpdateService {
 		try {
 			employee = empDao.selectByPkWithLock(form.getEmployeeId());
 		} catch (CannotAcquireLockException ex) {
+			// 排他ロックエラーが発生した場合
 			logger.warn(message.getMessage("WCOM00004", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00004", null));
 		}
 		if (employee == null) {
+			// データがない場合
 			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
 		}
 		if (!employee.updateDate.equals(form.getUpdateDate())) {
+			// 楽観排他エラーの場合
 			logger.debug("更新日時不一致 " + employee.updateDate + " " + form.getUpdateDate());
 			logger.warn(message.getMessage("WCOM00003", null));
 			throw new ApplicationCustomException(message.getMessage("WCOM00003", null));
@@ -133,6 +164,10 @@ public class RecordUpdateService {
 		empDao.delete(employee);
 	}
 
+	/**
+	 * 部署ブルダウンリスト取得
+	 * @return 部署ブルダウンリスト
+	 */
 	public List<Map<String, String>> getDepartmentList() {
 
 		List<Map<String, String>> list = new ArrayList<>();
