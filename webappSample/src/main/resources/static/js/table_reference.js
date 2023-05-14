@@ -28,9 +28,9 @@ $(function() {
 		form.method = "post";
 		form.addEventListener("formdata",(e) => {
 			let fd = e.formData;
-			// 現在のページインデックスをリクエストパラメータに追加
+			// リクエスト対象のページインデックスをリクエストパラメータに追加
 			fd.set("page", page);
 		});
 		form.submit();
 	});
-})
+});
