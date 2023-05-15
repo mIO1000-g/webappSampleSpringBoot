@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sample.dao.EmployeeDao;
-import com.sample.dao.TableUpdateDao;
+import com.sample.dao.TableDatatablesDao;
+import com.sample.form.TableDatatablesForm;
 import com.sample.form.TableDatatablesRecord;
-import com.sample.form.TableUpdateForm;
 import com.sample.util.MessageUtil;
 import com.sample.util.Util;
 
@@ -30,7 +30,7 @@ public class TableDatatablesService {
 	@Autowired
 	private MessageUtil message;
 	@Autowired
-	public TableUpdateDao dao;
+	public TableDatatablesDao dao;
 	@Autowired
 	private EmployeeDao empDao;
 
@@ -39,7 +39,7 @@ public class TableDatatablesService {
 	 * 検索
 	 * @param form フォームオブジェクト
 	 */
-	public List<TableDatatablesRecord> search(TableUpdateForm form) {
+	public List<TableDatatablesRecord> search(TableDatatablesForm form) {
 
 		// 検索
 		List<Map<String, Object>> detail = dao.selectDetail(form);
@@ -54,14 +54,14 @@ public class TableDatatablesService {
 
 			rec.setNo(Integer.toString(cnt++));
 			rec.setEmployeeId(Util.convertToString(map.get("employee_id")));
-			//rec.setNewLine(false);
+			rec.setNewLine(false);
 			rec.setName(Util.convertToString(map.get("name")));
 			rec.setGender(Util.convertToString(map.get("gender")));
 			rec.setBirthday(Util.convertDateTimeString(map.get("birthday"), "yyyyMMdd", "yyyy-MM-dd"));
 			rec.setEnteringDate(Util.convertDateTimeString(map.get("entering_date"), "yyyyMMdd", "yyyy-MM-dd"));
 			rec.setRetirementDate(Util.convertDateTimeString(map.get("retirement_date"), "yyyyMMdd", "yyyy-MM-dd"));
 			rec.setDepartmentId(Util.convertToString(map.get("department_id")));
-			//rec.setUpdateDate(Util.convertToString(map.get("update_date")));
+			rec.setUpdateDate(Util.convertToString(map.get("update_date")));
 
 			list.add(rec);
 		}

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sample.form.TableDatatablesForm;
 import com.sample.form.TableDatatablesRecord;
 import com.sample.form.TableUpdateForm;
 import com.sample.service.TableDatatablesService;
@@ -72,7 +73,7 @@ public class TableDatatablesController {
 	 */
 	@RequestMapping(path = "/search", method = { RequestMethod.POST })
 	@ResponseBody
-	public List<TableDatatablesRecord> search(TableUpdateForm form) {
+	public List<TableDatatablesRecord> search(TableDatatablesForm form) {
 
 		// 検索
 		return sv.search(form);

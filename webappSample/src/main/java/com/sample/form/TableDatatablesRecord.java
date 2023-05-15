@@ -30,6 +30,6 @@ public class TableDatatablesRecord {
 	private String retirementDate;
 	@NotBlank
 	private String departmentId;
-	//private boolean newLine;
-	//private String updateDate;
+	private boolean newLine;
+	private String updateDate;
 }
