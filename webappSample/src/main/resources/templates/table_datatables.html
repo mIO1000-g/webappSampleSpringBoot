@@ -17,7 +17,7 @@
     </div>
   </header>
   <main>
-    <form id="form" method="post" th:object="${tableUpdateForm}">
+    <form id="form" method="post" th:object="${tableDatatablesSearchForm}">
       <div class="condition-area">
         <label for="employeeId">社員ID</label>
         <input type="text" th:field="*{employeeId}">
@@ -43,11 +43,11 @@
         <button id="addLineB" type="button">行追加</button>
         <button id="confirmB" type="button">確定</button>
       </div>
-      <div class="table-area">
-        <table id="mytable">
-        </table>
-      </div>
     </form>
+    <div class="table-area">
+      <table id="mytable">
+      </table>
+    </div>
   </main>
   <div id="messageModal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -68,6 +68,7 @@
     </div>
   </div>
   <script th:inline="javascript">
+    let departmentList = /*[[${tableDatatablesSearchForm.departmentList}]]*/[];
     let message = /*[[${message}]]*/"";
     if (message) {
       // メッセージがある場合、モーダル表示

@@ -6,7 +6,7 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-public class TableDatatablesForm {
+public class TableDatatablesSearchForm {
 
 	private String employeeId;
 	private String name;
@@ -16,8 +16,6 @@ public class TableDatatablesForm {
 	private boolean retired;
 	private String departmentId;
 
-	List<Map<String, String>> departmentList;
-
-	private List<TableDatatablesRecord> detail;
+	private List<Map<String, String>> departmentList;
 
 }

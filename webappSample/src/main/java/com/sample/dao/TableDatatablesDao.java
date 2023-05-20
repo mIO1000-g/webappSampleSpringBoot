@@ -7,7 +7,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.boot.ConfigAutowireable;
 
-import com.sample.form.TableDatatablesForm;
+import com.sample.form.TableDatatablesSearchForm;
 
 
 @ConfigAutowireable
@@ -18,6 +18,6 @@ public interface TableDatatablesDao {
 	public List<Map<String, Object>> selectDepartmentList();
 	
 	@Select
-	public List<Map<String, Object>> selectDetail(TableDatatablesForm form);
+	public List<Map<String, Object>> selectDetail(TableDatatablesSearchForm form);
 
 }

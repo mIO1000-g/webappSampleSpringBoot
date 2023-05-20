@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.sample.dao.EmployeeDao;
 import com.sample.dao.TableDatatablesDao;
-import com.sample.form.TableDatatablesForm;
+import com.sample.form.TableDatatablesSearchForm;
 import com.sample.form.TableDatatablesRecord;
 import com.sample.util.MessageUtil;
 import com.sample.util.Util;
@@ -39,7 +39,7 @@ public class TableDatatablesService {
 	 * 検索
 	 * @param form フォームオブジェクト
 	 */
-	public List<TableDatatablesRecord> search(TableDatatablesForm form) {
+	public List<TableDatatablesRecord> search(TableDatatablesSearchForm form) {
 
 		// 検索
 		List<Map<String, Object>> detail = dao.selectDetail(form);

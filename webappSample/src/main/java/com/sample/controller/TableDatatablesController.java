@@ -11,14 +11,14 @@ import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sample.form.TableDatatablesForm;
+import com.sample.dto.ResponseDto;
+import com.sample.form.TableDatatablesConfirmForm;
 import com.sample.form.TableDatatablesRecord;
-import com.sample.form.TableUpdateForm;
+import com.sample.form.TableDatatablesSearchForm;
 import com.sample.service.TableDatatablesService;
 import com.sample.util.MessageUtil;
 
@@ -44,13 +44,13 @@ public class TableDatatablesController {
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 	}
 
-	@ModelAttribute
-	public TableUpdateForm resetForm(TableUpdateForm form) {
-
-		// プルダウンリストのリセット
-		form.setDepartmentList(sv.getDepartmentList());
-		return form;
-	}
+//	@ModelAttribute
+//	public TableDatatablesForm resetForm(TableDatatablesForm form) {
+//
+//		// プルダウンリストのリセット
+//		form.setDepartmentList(sv.getDepartmentList());
+//		return form;
+//	}
 
 	/**
 	 * 初期表示
@@ -58,8 +58,10 @@ public class TableDatatablesController {
 	 * @return ページ名
 	 */
 	@GetMapping("/")
-	public String init(TableUpdateForm form) {
+	public String init(TableDatatablesSearchForm form) {
 
+		// プルダウンリストのセット
+		form.setDepartmentList(sv.getDepartmentList());
 		// 初期値
 		form.setRetired(false);
 
@@ -68,17 +70,28 @@ public class TableDatatablesController {
 
 	/**
 	 * 検索
-	 * @param form フォームオブジェクト
+	 * @param form 検索用フォームオブジェクト
 	 * @return ページ名
 	 */
 	@RequestMapping(path = "/search", method = { RequestMethod.POST })
 	@ResponseBody
-	public List<TableDatatablesRecord> search(TableDatatablesForm form) {
+	public ResponseDto search(TableDatatablesSearchForm form) {
 
 		// 検索
-		return sv.search(form);
+		List<TableDatatablesRecord> list = sv.search(form);
+		
+		ResponseDto rd = new ResponseDto("", "OK", list);
+
+		return rd;
 	}
 
+	@RequestMapping(path = "/confirm", method = { RequestMethod.POST })
+	@ResponseBody
+	public ResponseDto confirm(TableDatatablesConfirmForm form) {
+		//System.out.println(detail);
+		ResponseDto rd = new ResponseDto("", "OK", null);
 
+		return rd;
+	}
 
 }
