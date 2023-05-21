@@ -53,7 +53,9 @@ $(function() {
 						data: "employeeId",
 						visible: true,
 						render: function (data, type, row, meta) {
-							return '<input type="text" name="employeeId" value="' + data + '" readonly>';
+							return '<input type="text" name="employeeId" value="' + data + '" readonly>'
+							+ '<input type="hidden" name="updateDate" value="' + row.newLine + '">'
+							+ '<input type="hidden" name="updateDate" value="' + row.updateDate + '">';
 						},
 					},
 					{
@@ -118,26 +120,6 @@ $(function() {
 							return html;
 						},
 					},
-					{
-						title: "",
-						data: "newLine",
-						width: 0,
-						orderable: false,
-						visible: true,
-						render: function (data, type, row, meta) {
-							return '<input type="hidden" name="newLine" value="' + data + '">';
-						},
-					},
-					{
-						title: "",
-						data: "updateDate",
-						width: 0,
-						orderable: false,
-						visible: true,
-						render: function (data, type, row, meta) {
-							return '<input type="hidden" name="updateDate" value="' + data + '">';
-						},
-					},
 				],
 			});
 
@@ -163,13 +145,12 @@ $(function() {
 						// チェックボックスは除外
 						return;
 					}
-					console.log(count);
+					// FormDataに追加
 					_form.append("detail[" + count + "]." + element.name, element.value);
 				});
 				count++;
 			}
 		});
-		console.log(_form);
 
 		$.ajax({
 			type: "POST",
@@ -180,7 +161,46 @@ $(function() {
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
-			console.log(_form);
+			console.log(data);
+			alert("成功");
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert("失敗");
+		});
+	});
+
+	$("#confirmB_JSON").on("click", function() {
+
+		// リクエスト用配列
+		let _data = [];
+		
+		$("#mytable tbody tr").each(function(index, row) {
+			// テーブルの行を走査
+			if ($(row).find("input:checkbox").is(":checked")) {
+				// 選択されている行のみ
+				
+				// １行分のオブジェクト
+				let _row = {};
+
+				$(row).find("input").each(function(index, element) {
+					if (element.type === "checkbox") {
+						// チェックボックスは除外
+						return;
+					}
+					_row[element.name] =  element.value;
+				});
+				_data.push(_row);
+			}
+		});
+
+		$.ajax({
+			type: "POST",
+			data: JSON.stringify(_data),
+			url: "/webappSample/table_datatables/confirm_json",
+			contentType: "application/json",
+			dataType: "json"
+
+		}).done(function(data, textStatus, jqXHR) {
+			console.log(data);
 			alert("成功");
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert("失敗");

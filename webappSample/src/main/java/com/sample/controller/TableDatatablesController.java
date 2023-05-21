@@ -11,6 +11,7 @@ import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -88,10 +89,19 @@ public class TableDatatablesController {
 	@RequestMapping(path = "/confirm", method = { RequestMethod.POST })
 	@ResponseBody
 	public ResponseDto confirm(TableDatatablesConfirmForm form) {
-		//System.out.println(detail);
+		System.out.println(form);
 		ResponseDto rd = new ResponseDto("", "OK", null);
 
 		return rd;
 	}
 
+	@RequestMapping(path = "/confirm_json", method = { RequestMethod.POST })
+	@ResponseBody
+	public ResponseDto confirmWithJson(@RequestBody List<TableDatatablesRecord> list) {
+		System.out.println(list);
+		ResponseDto rd = new ResponseDto("", "OK", null);
+
+		return rd;
+	}
+	
 }
