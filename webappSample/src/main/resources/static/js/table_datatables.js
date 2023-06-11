@@ -33,6 +33,9 @@ $(function() {
 				searching: false,
 				lengthChange: false,
 				pageLength: 8,
+				createdRow: function ( row, data, dataIndex, cells ) {
+					$(row).find("td").addClass("error-tooltip");
+				},
 				columns: [
 					{
 						title: "選択",
@@ -130,7 +133,7 @@ $(function() {
 		});
 	});
 
-	$("#confirmB").on("click", function() {
+	$("#confirmB_FormData").on("click", function() {
 		
 		let count = 0;
 		
@@ -140,7 +143,7 @@ $(function() {
 			// テーブルの行を走査
 			if ($(row).find("input:checkbox").is(":checked")) {
 				// 選択されている行のみ
-				$(row).find("input").each(function(index, element) {
+				$(row).find("input, select").each(function(index, element) {
 					if (element.type === "checkbox") {
 						// チェックボックスは除外
 						return;
@@ -155,7 +158,7 @@ $(function() {
 		$.ajax({
 			type: "POST",
 			data: _form,
-			url: "/webappSample/table_datatables/confirm",
+			url: "/webappSample/table_datatables/confirm_formdata",
 			processData: false,
 			contentType: false,
 			dataType: "json"
@@ -168,7 +171,7 @@ $(function() {
 		});
 	});
 
-	$("#confirmB_JSON").on("click", function() {
+	$("#confirmB_JSON2Form").on("click", function() {
 
 		// リクエスト用配列
 		let _data = [];
@@ -181,7 +184,46 @@ $(function() {
 				// １行分のオブジェクト
 				let _row = {};
 
-				$(row).find("input").each(function(index, element) {
+				$(row).find("input, select").each(function(index, element) {
+					if (element.type === "checkbox") {
+						// チェックボックスは除外
+						return;
+					}
+					_row[element.name] =  element.value;
+				});
+				_data.push(_row);
+			}
+		});
+
+		$.ajax({
+			type: "POST",
+			data: JSON.stringify({ detail : _data }),
+			url: "/webappSample/table_datatables/confirm_json2form",
+			contentType: "application/json",
+			dataType: "json"
+
+		}).done(function(data, textStatus, jqXHR) {
+			console.log(data);
+			alert("成功");
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert("失敗");
+		});
+	});
+
+	$("#confirmB_JSON2List").on("click", function() {
+
+		// リクエスト用配列
+		let _data = [];
+		
+		$("#mytable tbody tr").each(function(index, row) {
+			// テーブルの行を走査
+			if ($(row).find("input:checkbox").is(":checked")) {
+				// 選択されている行のみ
+				
+				// １行分のオブジェクト
+				let _row = {};
+
+				$(row).find("input, select").each(function(index, element) {
 					if (element.type === "checkbox") {
 						// チェックボックスは除外
 						return;
@@ -195,13 +237,32 @@ $(function() {
 		$.ajax({
 			type: "POST",
 			data: JSON.stringify(_data),
-			url: "/webappSample/table_datatables/confirm_json",
+			url: "/webappSample/table_datatables/confirm_json2list",
 			contentType: "application/json",
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
 			console.log(data);
-			alert("成功");
+			//alert("成功");
+			if ("NG" === data.result) {
+				
+				for (i = 0; i < data.data.length; i++) {
+					$("#mytable tbody tr").each(function(index, row) {
+						// テーブルの行を走査
+						if ($(row).find("input[name=employeeId]input[value=" + data.data[i].key + "]").length > 0) {
+							let element = $(row).find("input[name=" + data.data[i].column + "]");
+							element.attr("class", "has-error");
+							element.after('<span class="error-tooltip-text">' + data.data[i].errorMessage + '</span>');
+						}
+						
+					});					
+				}
+				
+
+				$("#messageModalText").text(data.message);
+				$("#messageModal").modal();
+			}
+
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert("失敗");
 		});

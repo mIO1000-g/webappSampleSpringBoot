@@ -5,6 +5,7 @@
 <title>一覧更新Ajax</title>
 <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/table_datatables.css}" />
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
@@ -41,8 +42,9 @@
       </div>
       <div class="command-area">
         <button id="addLineB" type="button">行追加</button>
-        <button id="confirmB" type="button">確定（FormData）</button>
-        <button id="confirmB_JSON" type="button">確定（JSON）</button>
+        <button id="confirmB_FormData" type="button">確定（FormData）</button>
+        <button id="confirmB_JSON2Form" type="button">確定（JSON->Form）</button>
+        <button id="confirmB_JSON2List" type="button">確定（JSON->List）</button>
       </div>
     </form>
     <div class="table-area">
@@ -60,7 +62,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>[[${message}]]</p>
+          <p id="messageModalText">[[${message}]]</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
