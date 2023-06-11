@@ -6,6 +6,7 @@ $(function() {
 
 	let initialized = false;
 
+	// 検索ボタン押下
 	$("#searchB").on("click", function() {
 
 		let _form = new FormData($("#form").get(0));
@@ -57,7 +58,7 @@ $(function() {
 						visible: true,
 						render: function (data, type, row, meta) {
 							return '<input type="text" name="employeeId" value="' + data + '" readonly>'
-							+ '<input type="hidden" name="updateDate" value="' + row.newLine + '">'
+							+ '<input type="hidden" name="newLine" value="' + row.newLine + '">'
 							+ '<input type="hidden" name="updateDate" value="' + row.updateDate + '">';
 						},
 					},
@@ -133,6 +134,7 @@ $(function() {
 		});
 	});
 
+	// 確定（FormData）ボタン押下
 	$("#confirmB_FormData").on("click", function() {
 		
 		let count = 0;
@@ -154,6 +156,10 @@ $(function() {
 				count++;
 			}
 		});
+		
+		// エラー表示を初期化
+		$("table span").remove();
+		$(".has-error").removeClass("has-error");
 
 		$.ajax({
 			type: "POST",
@@ -164,18 +170,38 @@ $(function() {
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
-			console.log(data);
-			alert("成功");
+
+			if ("NG" === data.result) {
+				// 処理結果NGの場合
+
+				for (i = 0; i < data.data.length; i++) {
+					// 返却データを走査
+					$("#mytable tbody tr").each(function(index, row) {
+						// テーブルの行を走査
+						if ($(row).find("input[name=employeeId]input[value=" + data.data[i].key + "]").length > 0) {
+							// キー（社員ID）が一致する行の場合、対象列の要素を赤くし、単項目チェックエラー内容を付加
+							let element = $(row).find("input[name=" + data.data[i].column + "]");
+							element.attr("class", "has-error");
+							element.after('<span class="error-tooltip-text">' + data.data[i].errorMessage + '</span>');
+						}
+					});	
+				}
+			}
+
+			// モーダル表示
+			showModal(data.message);
+
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert("失敗");
 		});
 	});
 
+	// 確定（JSON->Form）ボタン押下
 	$("#confirmB_JSON2Form").on("click", function() {
 
 		// リクエスト用配列
 		let _data = [];
-		
+
 		$("#mytable tbody tr").each(function(index, row) {
 			// テーブルの行を走査
 			if ($(row).find("input:checkbox").is(":checked")) {
@@ -194,6 +220,10 @@ $(function() {
 				_data.push(_row);
 			}
 		});
+
+		// エラー表示を初期化
+		$("table span").remove();
+		$(".has-error").removeClass("has-error");
 
 		$.ajax({
 			type: "POST",
@@ -203,23 +233,45 @@ $(function() {
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
-			console.log(data);
-			alert("成功");
+
+			if ("NG" === data.result) {
+				// 処理結果NGの場合
+
+				for (i = 0; i < data.data.length; i++) {
+					// 返却データを走査
+					$("#mytable tbody tr").each(function(index, row) {
+						// テーブルの行を走査
+						if ($(row).find("input[name=employeeId]input[value=" + data.data[i].key + "]").length > 0) {
+							// キー（社員ID）が一致する行の場合、対象列の要素を赤くし、単項目チェックエラー内容を付加
+							let element = $(row).find("input[name=" + data.data[i].column + "]");
+							element.attr("class", "has-error");
+							element.after('<span class="error-tooltip-text">' + data.data[i].errorMessage + '</span>');
+						}
+					});	
+				}
+			}
+
+			// モーダル表示
+			showModal(data.message);
+
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert("失敗");
 		});
 	});
 
+	// 確定（JSON->List）ボタン押下
 	$("#confirmB_JSON2List").on("click", function() {
 
 		// リクエスト用配列
 		let _data = [];
 		
+		//console.log($(".datatable").DataTable().$('input, select').html);
+
 		$("#mytable tbody tr").each(function(index, row) {
 			// テーブルの行を走査
 			if ($(row).find("input:checkbox").is(":checked")) {
 				// 選択されている行のみ
-				
+
 				// １行分のオブジェクト
 				let _row = {};
 
@@ -230,10 +282,16 @@ $(function() {
 					}
 					_row[element.name] =  element.value;
 				});
+				// 送信用データに追加
 				_data.push(_row);
 			}
 		});
 
+		// エラー表示を初期化
+		$("table span").remove();
+		$(".has-error").removeClass("has-error");
+
+		// 送信
 		$.ajax({
 			type: "POST",
 			data: JSON.stringify(_data),
@@ -242,26 +300,26 @@ $(function() {
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
-			console.log(data);
-			//alert("成功");
+
 			if ("NG" === data.result) {
-				
+				// 処理結果NGの場合
+
 				for (i = 0; i < data.data.length; i++) {
+					// 返却データを走査
 					$("#mytable tbody tr").each(function(index, row) {
 						// テーブルの行を走査
 						if ($(row).find("input[name=employeeId]input[value=" + data.data[i].key + "]").length > 0) {
+							// キー（社員ID）が一致する行の場合、対象列の要素を赤くし、単項目チェックエラー内容を付加
 							let element = $(row).find("input[name=" + data.data[i].column + "]");
 							element.attr("class", "has-error");
 							element.after('<span class="error-tooltip-text">' + data.data[i].errorMessage + '</span>');
 						}
-						
-					});					
+					});	
 				}
-				
-
-				$("#messageModalText").text(data.message);
-				$("#messageModal").modal();
 			}
+
+			// モーダル表示
+			showModal(data.message);
 
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert("失敗");
@@ -269,3 +327,14 @@ $(function() {
 	});
 
 });
+
+function showModal(messages) {
+	if (Array.isArray(messages)) {
+		// メッセージが配列の場合
+		$("#messageModalText").text(messages.join("\r\n"));
+	} else {
+		$("#messageModalText").text(messages);
+	}
+	$("#messageModal").modal();
+}
+

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.SmartValidator;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -94,48 +93,94 @@ public class TableDatatablesController {
 		return rd;
 	}
 
+	/**
+	 * 確定（FormData利用）
+	 * @param form フォームオブジェクト
+	 * @param br BindingResult
+	 * @return レスポンスDTO
+	 */
 	@RequestMapping(path = "/confirm_formdata", method = { RequestMethod.POST })
 	@ResponseBody
-	public ResponseDto confirmFormData(@Validated TableDatatablesConfirmForm form, BindingResult br) {
-		System.out.println(form);
-		
-		if (br.hasErrors()) {
-			System.out.println(br.getAllErrors());
-			br.getFieldErrors().forEach(e -> System.out.println(e.getField() + "=" + e.getDefaultMessage()));
-			System.out.println(br.getFieldValue("detail[0].name"));
-			System.out.println(br.getRawFieldValue("detail[0].name"));
-			System.out.println(br.getTarget());
-			System.out.println(br.getFieldError("detail[0].name").getDefaultMessage());
-			ResponseDto rd = new ResponseDto("", "NG", null);
-			return rd;
-		}
-		
-		ResponseDto rd = new ResponseDto("", "OK", null);
+	public ResponseDto confirmFormData(TableDatatablesConfirmForm form, BindingResult br) {
 
-		return rd;
-	}
-
-	@RequestMapping(path = "/confirm_json2form", method = { RequestMethod.POST })
-	@ResponseBody
-	public ResponseDto confirmJson2Form(@RequestBody @Validated TableDatatablesConfirmForm form, BindingResult br) {
-		System.out.println(form);
+		// 単項目チェック
+		validate(form.getDetail(), br);
+		
 		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
 		if (br.hasErrors()) {
-
-			ResponseDto rd = new ResponseDto("", "NG", null);
+			// エラーがある場合
+			List<FieldErrorDto> fieldErrors = getFieldErrors(br);
+			ResponseDto rd = new ResponseDto(message.getMessage("WCOM00002", null), "NG", fieldErrors);
 			return rd;
 		}
+		
+		sv.confirm(form.getDetail());
 
-		ResponseDto rd = new ResponseDto("", "OK", null);
+		ResponseDto rd = new ResponseDto(message.getMessage("WCOM00001", null), "OK", null);
 
 		return rd;
 	}
 
+	/**
+	 * 確定（JsonからFormクラスにバインド）
+	 * @param form フォームオブジェクト
+	 * @param br BindingResult
+	 * @return レスポンスDTO
+	 */
+	@RequestMapping(path = "/confirm_json2form", method = { RequestMethod.POST })
+	@ResponseBody
+	public ResponseDto confirmJson2Form(@RequestBody TableDatatablesConfirmForm form, BindingResult br) {
+
+		// 単項目チェック
+		validate(form.getDetail(), br);
+		
+		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
+		if (br.hasErrors()) {
+			// エラーがある場合
+			List<FieldErrorDto> fieldErrors = getFieldErrors(br);
+			ResponseDto rd = new ResponseDto(message.getMessage("WCOM00002", null), "NG", fieldErrors);
+			return rd;
+		}
+		
+		sv.confirm(form.getDetail());
+
+		ResponseDto rd = new ResponseDto(message.getMessage("WCOM00001", null), "OK", null);
+
+		return rd;
+	}
+
+	/**
+	 * 確定（JsonからListにバインド）
+	 * @param form フォームオブジェクト
+	 * @param br BindingResult
+	 * @return レスポンスDTO
+	 */
 	@RequestMapping(path = "/confirm_json2list", method = { RequestMethod.POST })
 	@ResponseBody
 	public ResponseDto confirmJson2List(@RequestBody List<TableDatatablesRecord> list, BindingResult br) {
-		System.out.println(list);
 
+		// 単項目チェック
+		validate(list, br);
+
+		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
+		if (br.hasErrors()) {
+			// エラーがある場合
+			List<FieldErrorDto> fieldErrors = getFieldErrors(br);
+			ResponseDto rd = new ResponseDto(message.getMessage("WCOM00002", null), "NG", fieldErrors);
+			return rd;
+		}
+		
+		sv.confirm(list);
+
+		ResponseDto rd = new ResponseDto(message.getMessage("WCOM00001", null), "OK", null);
+
+		return rd;
+	}
+
+	private void validate(List<TableDatatablesRecord> list, BindingResult br) {
+		// NOTE:リクエストハンドラの引数にアノテーションをつけてValidationも可能だが、
+		// 自動でBindingResultに格納されるパスが、結果をクライアントに戻したときに結局使いづらいため、自前で制御する。
+		
 		for (int i = 0; i < list.size(); i++) {
 			TableDatatablesRecord record = list.get(i);
 			// 選択した行のみ単項目チェック対象とする
@@ -146,31 +191,21 @@ public class TableDatatablesController {
 			// 追加したパスをリセット
 			br.popNestedPath();
 		}
-
-		logger.debug("エラー件数=" + Integer.toString(br.getErrorCount()));
-		if (br.hasErrors()) {
-			System.out.println(br.getAllErrors());
-			br.getFieldErrors().forEach(e -> System.out.println(e.getField() + "=" + e.getDefaultMessage()));
-			List<FieldErrorDto> fieldErrors = getFieldErrors(br);
-			ResponseDto rd = new ResponseDto(message.getMessage("WCOM00002", null), "NG", fieldErrors);
-			return rd;
-		}
-
-		ResponseDto rd = new ResponseDto("", "OK", null);
-
-		return rd;
 	}
-	
+
 	private List<FieldErrorDto> getFieldErrors(BindingResult br) {
+		// BindingResultのパスから、キー情報とフィールドを取得する正規表現
 		String regex = "\\[(.+?)\\]\\.(.+?)$";
 		Pattern p = Pattern.compile(regex);
 		
 		List<FieldErrorDto> list = new ArrayList<>();
 
+		// BindingResultからエラーメッセージを全て取得
 		for (FieldError fe : br.getFieldErrors()) {
 			FieldErrorDto dto = new FieldErrorDto();
 			Matcher m = p.matcher(fe.getField());
 			if (m.find()) {
+				// 単項目チェックエラー格納用DTOに詰めなおす
 				System.out.println(m.group(1) + "-" + m.group(2)  + "=" + fe.getDefaultMessage());
 				dto.setKey(m.group(1));
 				dto.setColumn(m.group(2));
@@ -179,7 +214,6 @@ public class TableDatatablesController {
 			}
 		}
 
-		
 		return list;
 	}
 }
