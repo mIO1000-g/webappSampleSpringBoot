@@ -156,10 +156,6 @@ $(function() {
 				count++;
 			}
 		});
-		
-		// エラー表示を初期化
-		$("table span").remove();
-		$(".has-error").removeClass("has-error");
 
 		$.ajax({
 			type: "POST",
@@ -170,6 +166,10 @@ $(function() {
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
+
+		// エラー表示を初期化
+		$("table span").remove();
+		$(".has-error").removeClass("has-error");
 
 			if ("NG" === data.result) {
 				// 処理結果NGの場合
@@ -221,10 +221,6 @@ $(function() {
 			}
 		});
 
-		// エラー表示を初期化
-		$("table span").remove();
-		$(".has-error").removeClass("has-error");
-
 		$.ajax({
 			type: "POST",
 			data: JSON.stringify({ detail : _data }),
@@ -233,6 +229,10 @@ $(function() {
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
+
+			// エラー表示を初期化
+			$("table span").remove();
+			$(".has-error").removeClass("has-error");
 
 			if ("NG" === data.result) {
 				// 処理結果NGの場合
@@ -287,10 +287,6 @@ $(function() {
 			}
 		});
 
-		// エラー表示を初期化
-		$("table span").remove();
-		$(".has-error").removeClass("has-error");
-
 		// 送信
 		$.ajax({
 			type: "POST",
@@ -300,6 +296,10 @@ $(function() {
 			dataType: "json"
 
 		}).done(function(data, textStatus, jqXHR) {
+
+			// エラー表示を初期化
+			$("table span").remove();
+			$(".has-error").removeClass("has-error");
 
 			if ("NG" === data.result) {
 				// 処理結果NGの場合
