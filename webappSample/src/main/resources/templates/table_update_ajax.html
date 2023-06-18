@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>一覧更新Ajax</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/table_update_ajax.css}" />
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/js/table_update_ajax.js}"></script>
+</head>
+<body>
+  <header>
+    <div class="form-name">
+      <h2>社員マスタ一覧更新Ajax</h2>
+    </div>
+  </header>
+  <main>
+    <form id="form" method="post" th:object="${tableUpdateAjaxForm}">
+      <div class="condition-area">
+        <label for="employeeId">社員ID</label>
+        <input type="text" th:field="*{employeeId}">
+        <label for="name">社員名</label>
+        <input type="text" th:field="*{name}">
+        <label>性別</label>
+        <input type="checkbox" th:field="*{gender_m}">
+        <label th:for="${#ids.prev('gender_m')}">男</label>
+        <input type="checkbox" th:field="*{gender_f}">
+        <label th:for="${#ids.prev('gender_f')}">女</label>
+        <label for="enteringYear">入社年</label>
+        <input type="text" th:field="*{enteringYear}">
+        <input type="checkbox" th:field="*{retired}">
+        <label  th:for="${#ids.prev('retired')}">退職済</label>
+        <select id="departmentId" name="departmentId">
+          <option></option>
+          <option th:each="department : *{departmentList}" th:value="${department.departmentId}" th:text="${department.departmentName}"
+            th:selected="${department.departmentId} == *{departmentId}"></option>
+        </select>
+        <button id="searchB" type="button">検索</button>
+      </div>
+      <div class="command-area">
+        <button id="addLineB" type="button">行追加</button>
+        <button id="confirmB" type="button">確定</button>
+      </div>
+    </form>
+    <div class="table-area">
+      <table id="mytable">
+      </table>
+    </div>
+  </main>
+  <div id="messageModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">メッセージ</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="messageModalText">[[${message}]]</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script th:inline="javascript">
+    let departmentList = /*[[${tableUpdateAjaxForm.departmentList}]]*/[];
+    let message = /*[[${message}]]*/"";
+    if (message) {
+      // メッセージがある場合、モーダル表示
+      $("#messageModal").modal();
+    }
+  </script>
+</body>
+</html>
