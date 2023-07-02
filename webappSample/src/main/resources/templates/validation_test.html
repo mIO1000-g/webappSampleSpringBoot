@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>バリデーションテスト</title>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/validation_test.js}"></script>
+</head>
+<body>
+  <header>
+    <div class="form-name">
+      <h2>バリデーションテスト</h2>
+    </div>
+  </header>
+  <main>
+    <form id="form" method="post" th:object="${validationTestForm}" >
+      <div class="condition-area">
+        <label id="">必須</label>
+        <input type="text" th:field="*{strRequired}">
+        <label id="">All</label>
+        <input type="text" th:field="*{strAll}">
+        <label id="">AlphaNumericSymbol</label>
+        <input type="text" th:field="*{strAlphaNumericSymbol}">
+        <label id="">Integer</label>
+        <input type="text" th:field="*{strInteger}">
+        <label id="">Date</label>
+        <input type="text" th:field="*{strDate}">
+        <label id="">Time</label>
+        <input type="text" th:field="*{strTime}">
+        <label id="">DateTimestamp</label>
+        <input type="text" th:field="*{strDateTImestamp}">
+        <label id="">マスタ存在チェック</label>
+        <input type="text" th:field="*{employeeId}">
+        <label id="">期間</label>
+        <input type="text" th:field="*{startDate}">～<input type="text" th:field="*{endDate}">
+        <label id="">Password</label>
+        <input type="text" th:field="*{password}">
+      </div>
+      <div class="command-area">
+        <button id="validateB" type="button">チェック</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
