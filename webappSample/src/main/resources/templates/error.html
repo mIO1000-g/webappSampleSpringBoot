@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>カスタムエラーページ</title>
+</head>
+<body>
+  <!-- エラー内容を表示 -->
+  <h1 th:text="${status}"></h1>
+  <p th:text="${path}"></p>
+  <p th:text="${timestamp}"></p>
+  <p th:text="${error}"></p>
+  <p th:text="${exception}"></p>
+  <p th:text="${message}"></p>
+  <p th:text="${trace}"></p>
+
+  <!-- <form method="post" th:action="@{/logout}">
+    <button class="btn btn-link" type="submit">ログイン画面に戻る</button>
+  </form> -->
+
+</body>
+</html>
