@@ -38,8 +38,13 @@
       </div>
       <div class="command-area">
         <button id="validateB" type="button">チェック</button>
+        <button id="smartValidateB" type="button">チェック（SmartValidator）</button>
       </div>
+      <ul th:if="${#fields.hasAnyErrors()}">
+          <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+      </ul>
     </form>
+
   </main>
 </body>
 </html>
