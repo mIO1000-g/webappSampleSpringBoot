@@ -18,6 +18,9 @@
       <label for="name">社員名</label>
       <input type="text" th:field="*{name}">
       <label>性別</label> <label for="gender_m">男</label>
+      <!-- NOTE:type=checkboxをth:filedで出力すると、チェックボックス要素を出力するのと同時に、
+      パラメータ名の先頭にアンダースコアが付いた形でhidden要素を出力する。
+      チェックボックスのvalueがチェックされていない場合でも、hiddenの要素が必ず送信される -->
       <input type="checkbox" th:field="*{gender_m}">
       <label for="gender_f">女</label>
       <input type="checkbox" th:field="*{gender_f}">

@@ -12,6 +12,12 @@ import java.util.Date;
  */
 public final class Util {
 
+	/**
+	 * 引数を文字列に変更
+	 * ※ nullの場合はnullで返却
+	 * @param obj オブジェクト
+	 * @return 文字列
+	 */
 	public final static String convertToString(Object obj) {
 
 		if (obj == null)
@@ -20,6 +26,13 @@ public final class Util {
 		return String.valueOf(obj);
 	}
 
+	/** 
+	 * 日時を指定の日時フォーマットの文字列に変換
+	 * @param obj オブジェクト
+	 * @param fromFormat 変換前日時フォーマット
+	 * @param toFormat 変換後日時フォーマット
+	 * @return 日時文字列
+	 */
 	public final static String convertDateTimeString(Object obj, String fromFormat, String toFormat) {
 
 		if (obj == null)
@@ -37,6 +50,11 @@ public final class Util {
 
 	}
 	
+	/**
+	 * 指定フォーマットの現在日時文字列を取得
+	 * @param format 日付フォーマット
+	 * @return 日時文字列
+	 */
 	public final static String getNow(String format) {
 		LocalDateTime ldt = LocalDateTime.now();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format);
