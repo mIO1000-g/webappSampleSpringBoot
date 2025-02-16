@@ -20,7 +20,6 @@ public interface TableReferenceDao {
 	 * @return 明細データ
 	 */
 	@Select
-	
 	public List<Map<String, Object>> selectDetail(TableReferenceForm form);
 	
 	/**
@@ -30,6 +29,5 @@ public interface TableReferenceDao {
 	 * @return 明細データ
 	 */
 	@Select
-	
 	public List<Map<String, Object>> selectDetailPageable(SelectOptions options, TableReferenceForm form);
 }
