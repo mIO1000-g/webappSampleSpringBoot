@@ -7,11 +7,17 @@
 </head>
 <body>
   <h1>メニュー</h1>
-  <p sec:authorize="authenticated">ようこそ<span sec:authentication="principal.loginUser.name">ユーザー</span>さん</p>
+  <!-- <p sec:authorize="authenticated">ようこそ<span sec:authentication="principal.loginUser.name">ユーザー</span>さん</p> -->
+  <div>
+    <a href="/webappSample?locale=en">English</a>
+    <a href="/webappSample?locale=ja">Japanese</a>
+  </div>
   <ul>
     <li sec:authorize="not authenticated"><a th:href="@{/login}">ログインページへ</a></li>
+    <li><a th:href="@{/table_reference/}">一覧参照</a></li>
+    <li><a th:href="@{/record_update/}">単票更新</a></li>
   </ul>
-  <form sec:authorize="authenticated" method="post" action="index.html" th:action="@{/logout}">
+  <form sec:authorize="authenticated" method="post" th:action="@{/logout}">
     <button type="submit">ログアウト</button>
   </form>
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MenuController {
 
 	@GetMapping("/menu")
-	public String login() {
+	public String init() {
 		return "menu";
 	}
 }

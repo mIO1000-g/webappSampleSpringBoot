@@ -1,24 +1,26 @@
-//package com.sample.controller;
-//
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.GetMapping;
-//
-//@Controller
-//public class LoginController {
-//
-////	@GetMapping("/")
-////	public String index() {
-////		// 静的ページなので、拡張子含めて指定してフォワード
-////		return "forward:/index.html";
-////	}
-//
-//	@GetMapping("/login")
-//	public String login() {
-//		return "login";
-//	}
-//	
-//	@GetMapping("/logout")
-//	public String logout() {
-//		return "login";
-//	}
-//}
+package com.sample.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class LoginController {
+
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+	
+	@GetMapping(value="/login", params="failure")
+	public String loginFail(Model model) {
+		model.addAttribute("failureMessage", "ログインに失敗しました");
+		return "login";
+	}
+	
+	@GetMapping(value="/login", params="logout")
+	public String logout(Model model) {
+		model.addAttribute("logoutMessage", "ログアウトしました");
+		return "login";
+	}
+}
