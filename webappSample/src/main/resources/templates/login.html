@@ -7,12 +7,14 @@
 </head>
 <body>
   <h1>ログインページ</h1>
-  <p th:if="${failureMessage} != null" class="error" th:text="${failureMessage}"></p>
+  <p th:if="${failureMessage} != null" class="error" th:text="${failureMessage}">
+    <p th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+  </p>
   <p th:if="${logoutMessage} != null" class="error" th:text="${logoutMessage}"></p>
   <p th:if="${param.error}" class="error">ユーザー名またはパスワードが違います。</p>
   <form method="post" action="index.html" th:action="@{/login}">
-    ユーザー名: <input type="text" name="username"><br>
-    パスワード: <input type="password" name="password"><br>
+    ユーザー名: <input type="text" name="userId" required><br>
+    パスワード: <input type="password" name="password" required><br>
     <button type="submit">ログイン</button>
   </form>
 </body>
